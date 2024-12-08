@@ -1,8 +1,7 @@
 package com.vizor.test;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 
 public class Main {
     private static final int WIDTH = 1024;

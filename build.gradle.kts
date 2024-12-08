@@ -1,7 +1,7 @@
 plugins {
-    id ("java")
+    id("java")
     id("application")
-    id ("org.javamodularity.moduleplugin") version ("1.8.12")
+    id("org.javamodularity.moduleplugin") version ("1.8.12")
     id("org.openjfx.javafxplugin") version ("0.1.0")
 }
 
@@ -37,9 +37,9 @@ java {
     }
 }
 dependencies {
-    compileOnly ("org.projectlombok:lombok:1.18.36")
-    annotationProcessor ("org.projectlombok:lombok:1.18.36")
+    compileOnly("org.projectlombok:lombok:1.18.36")
+    annotationProcessor("org.projectlombok:lombok:1.18.36")
 
-    testCompileOnly ("org.projectlombok:lombok:1.18.36")
-    testAnnotationProcessor ("org.projectlombok:lombok:1.18.36")
+    testCompileOnly("org.projectlombok:lombok:1.18.36")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.36")
 }

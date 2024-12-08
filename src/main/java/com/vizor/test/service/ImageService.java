@@ -1,4 +1,4 @@
-package com.vizor.test;
+package com.vizor.test.service;
 
 import com.vizor.test.module.ImageDTO;
 import com.vizor.test.module.ImagesHandler;
@@ -35,7 +35,7 @@ public class ImageService {
     }
 
     public void addImage(File file) throws MalformedURLException {
-        ImageDTO imageDTO = new ImageDTO(file.getName(), new Image(file.toURI().toURL().toExternalForm()));
+        ImageDTO imageDTO = new ImageDTO(file.getName(), new Image(file.toURI().toURL().toExternalForm()), size() + 1);
         images.getImages().add(imageDTO);
     }
 

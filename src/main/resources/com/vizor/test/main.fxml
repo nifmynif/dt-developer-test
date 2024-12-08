@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.BoxBlur?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="444.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19"
+<AnchorPane prefHeight="444.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.vizor.test.controller.MainWindowController">
     <VBox alignment="CENTER" spacing="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0"
           AnchorPane.topAnchor="50.0">
         <TextField fx:id="searchField" promptText="Введите текст для поиска..."/>
-        <Button fx:id="searchButton" text="Поиск"/>
+        <Button fx:id="searchButton" onAction="#searchButtonPress" text="Поиск"/>
     </VBox>
+
+    <Label fx:id="errorLabel" textFill="red" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="30.0"/>
 
     <HBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0">
-        <ImageView fx:id="prev" fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Zunge_raus.JPG/1200px-Zunge_raus.JPG"/>
-            <effect>
-                <BoxBlur/>
-            </effect>
-        </ImageView>
+        <VBox alignment="CENTER">
+            <Label fx:id="prevLabel" prefWidth="100" textAlignment="CENTER"/>
+            <ImageView fx:id="prev" fitHeight="100" fitWidth="100" preserveRatio="true">
+                <effect>
+                    <BoxBlur/>
+                </effect>
+            </ImageView>
+        </VBox>
 
-        <ImageView fx:id="cur" fitHeight="200" fitWidth="300" preserveRatio="true">
-            <Image url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Zunge_raus.JPG/1200px-Zunge_raus.JPG"/>
-        </ImageView>
+        <VBox alignment="CENTER">
+            <Label fx:id="curLabel" prefWidth="300" textAlignment="CENTER"/>
+            <ImageView fx:id="cur" fitHeight="200" fitWidth="300" preserveRatio="true"/>
+        </VBox>
 
-        <ImageView fx:id="next" fitHeight="100" fitWidth="100" preserveRatio="true">
-            <Image url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Zunge_raus.JPG/1200px-Zunge_raus.JPG"/>
-            <effect>
-                <BoxBlur/>
-            </effect>
-        </ImageView>
+        <VBox alignment="CENTER">
+            <Label fx:id="nextLabel" prefWidth="100" textAlignment="CENTER"/>
+            <ImageView fx:id="next" fitHeight="100" fitWidth="100" preserveRatio="true">
+                <effect>
+                    <BoxBlur/>
+                </effect>
+            </ImageView>
+        </VBox>
     </HBox>
+
     <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0"
           AnchorPane.rightAnchor="0">
-        <Button fx:id="add" text="Добавить картинку"/>
+        <Button fx:id="add" onAction="#addButtonPress" text="Добавить картинку"/>
     </VBox>
 </AnchorPane>

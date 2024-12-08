@@ -9,4 +9,5 @@ import lombok.Getter;
 public class ImageDTO {
     private String name;
     private Image image;
+    private int pos;
 }

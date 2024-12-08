@@ -1,10 +1,13 @@
 package com.vizor.test.controller;
 
-import com.vizor.test.ImageService;
 import com.vizor.test.module.ImagesHandler;
+import com.vizor.test.service.ImageService;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.OptionalInt;
@@ -19,14 +22,22 @@ public class ImageController {
     public void initialize() {
         File folder = new File("assets");
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
-                .forEach(file -> {
-                    checkImage(file);
-                    try {
-                        imageService.addImage(file);
-                    } catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                .forEach(this::addImage);
+    }
+
+    public void saveImage(File file) throws IOException {
+        addImage(file);
+        File destinationFile = new File("assets", file.getName());
+        Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private void addImage(File file) {
+        checkImage(file);
+        try {
+            imageService.addImage(file);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void getImage(String fileName) {
@@ -35,8 +46,12 @@ public class ImageController {
             imageService.setCur(imageService.getImageByIndex(index.getAsInt()));
             if (index.getAsInt() - 1 >= 0)
                 imageService.setPrev(imageService.getImageByIndex(index.getAsInt() - 1));
+            else
+                imageService.setPrev(imageService.getImageByIndex(imageService.size() - 1));
             if (index.getAsInt() + 1 < imageService.size())
                 imageService.setNext(imageService.getImageByIndex(index.getAsInt() + 1));
+            else
+                imageService.setNext(imageService.getImageByIndex(0));
         }
     }
 
