@@ -20,6 +20,8 @@ public class ImageController {
 
     public ImageController() {
         initialize();
+        if (!isEmpty())
+            getImage(imageService.getImageByIndex(0).getName());
     }
 
     public void initialize() {
@@ -78,5 +80,9 @@ public class ImageController {
         addImage(file);
         File destinationFile = new File(Constants.MAIN_FOLDER, file.getName());
         Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    public boolean isEmpty() {
+        return imageService.size() == 0;
     }
 }

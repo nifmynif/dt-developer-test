@@ -30,7 +30,8 @@ public class MainWindowController {
         try {
             imageController = new ImageController();
             imagesHandler = imageController.getImage();
-            setImages("0a84326a-258e-410d-acb0-75d143de2fce.png");
+            if (!imageController.isEmpty())
+                updateImages();
             next.setOnMouseClicked(event -> chooseRight());
             prev.setOnMouseClicked(event -> chooseLeft());
         } catch (Exception e) {
