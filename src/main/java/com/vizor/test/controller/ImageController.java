@@ -1,5 +1,7 @@
 package com.vizor.test.controller;
 
+import com.vizor.test.constants.Constants;
+import com.vizor.test.constants.ConstantsError;
 import com.vizor.test.module.ImagesHandler;
 import com.vizor.test.service.ImageService;
 
@@ -11,6 +13,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.OptionalInt;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
     public static final ImageService imageService = new ImageService();
@@ -20,15 +23,9 @@ public class ImageController {
     }
 
     public void initialize() {
-        File folder = new File("assets");
+        File folder = new File(Constants.MAIN_FOLDER);
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
                 .forEach(this::addImage);
-    }
-
-    public void saveImage(File file) throws IOException {
-        addImage(file);
-        File destinationFile = new File("assets", file.getName());
-        Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     private void addImage(File file) {
@@ -38,6 +35,24 @@ public class ImageController {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void checkImage(File file) throws IllegalArgumentException {
+        String fileName = file.getName();
+        AtomicBoolean isImage = new AtomicBoolean(false);
+        if (!file.isFile() ||
+                !file.exists())
+            throw new IllegalArgumentException(ConstantsError.FILE_NOT_EXIST + fileName);
+        Constants.EXTENSION_IMAGE.forEach(ext -> {
+            if (fileName.endsWith(ext))
+                isImage.set(true);
+        });
+        if (!isImage.get())
+            throw new IllegalArgumentException(ConstantsError.FILE_NOT_IMAGE + fileName);
+    }
+
+    public ImagesHandler getImage() {
+        return imageService.getImage();
     }
 
     public void getImage(String fileName) {
@@ -52,22 +67,13 @@ public class ImageController {
                 imageService.setNext(imageService.getImageByIndex(index.getAsInt() + 1));
             else
                 imageService.setNext(imageService.getImageByIndex(0));
-        }
+        } else
+            throw new IllegalArgumentException(ConstantsError.IMAGE_NOT_EXIST + fileName);
     }
 
-    private void checkImage(File file) throws IllegalArgumentException {
-        String fileName = file.getName();
-        if (!file.isFile() ||
-                !file.exists())
-            throw new IllegalArgumentException("Файл не существует или это не файл: " + fileName);
-
-        if (!fileName.endsWith(".jpg") &&
-                !fileName.endsWith(".jpeg") &&
-                !fileName.endsWith(".png"))
-            throw new IllegalArgumentException("Это не картинка: " + fileName);
-    }
-
-    public ImagesHandler getImage() {
-        return imageService.getImage();
+    public void saveImage(File file) throws IOException {
+        addImage(file);
+        File destinationFile = new File(Constants.MAIN_FOLDER, file.getName());
+        Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 }

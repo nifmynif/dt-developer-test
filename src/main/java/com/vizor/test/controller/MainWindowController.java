@@ -10,7 +10,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MainWindowController {
     public TextField searchField;
@@ -35,14 +34,6 @@ public class MainWindowController {
         prev.setOnMouseClicked(event -> chooseLeft());
     }
 
-    private void chooseLeft() {
-        setImages(imagesHandler.getPrev().getName());
-    }
-
-    private void chooseRight() {
-        setImages(imagesHandler.getNext().getName());
-    }
-
     private void setImages(String name) {
         imageController.getImage(name);
         updateImages();
@@ -57,17 +48,35 @@ public class MainWindowController {
         nextLabel.setText(String.valueOf(imagesHandler.getNext().getPos()));
     }
 
-    public void addButtonPress() throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Выбор файла");
-        Stage stage = new Stage();
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        imageController.saveImage(selectedFile);
-        setImages(selectedFile.getName());
+    private void chooseRight() {
+        setImages(imagesHandler.getNext().getName());
+    }
+
+    private void chooseLeft() {
+        setImages(imagesHandler.getPrev().getName());
+    }
+
+    public void addButtonPress() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Выбор файла");
+            Stage stage = new Stage();
+            File selectedFile = fileChooser.showOpenDialog(stage);
+            imageController.saveImage(selectedFile);
+            setImages(selectedFile.getName());
+            errorLabel.setText("");
+        } catch (Exception e) {
+            errorLabel.setText(e.getMessage());
+        }
     }
 
     public void searchButtonPress() {
-        imageController.getImage(searchField.getText());
-        updateImages();
+        try {
+            imageController.getImage(searchField.getText());
+            updateImages();
+            errorLabel.setText("");
+        } catch (Exception e) {
+            errorLabel.setText(e.getMessage());
+        }
     }
 }
