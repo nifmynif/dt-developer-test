@@ -20,7 +20,7 @@ public class ImageController {
 
     public ImageController() {
         initialize();
-        if (!isEmpty())
+        if (isFull())
             getImage(imageService.getImageByIndex(0).getName());
     }
 
@@ -49,7 +49,7 @@ public class ImageController {
                 !file.exists())
             throw new IllegalArgumentException(ConstantsError.FILE_NOT_EXIST + fileName);
         Constants.EXTENSION_IMAGE.forEach(ext -> {
-            if (fileName.endsWith(ext))
+            if (fileName.toLowerCase().endsWith(ext))
                 isImage.set(true);
         });
         if (!isImage.get())
@@ -82,7 +82,7 @@ public class ImageController {
         Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public boolean isEmpty() {
-        return imageService.size() == 0;
+    public boolean isFull() {
+        return imageService.size() != 0;
     }
 }

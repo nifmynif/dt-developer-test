@@ -30,7 +30,7 @@ public class MainWindowController {
         try {
             imageController = new ImageController();
             imagesHandler = imageController.getImage();
-            if (!imageController.isEmpty())
+            if (imageController.isFull())
                 updateImages();
             next.setOnMouseClicked(event -> chooseRight());
             prev.setOnMouseClicked(event -> chooseLeft());
