@@ -27,11 +27,15 @@ public class MainWindowController {
 
     @FXML
     public void initialize() {
-        imageController = new ImageController();
-        imagesHandler = imageController.getImage();
-        setImages("0a84326a-258e-410d-acb0-75d143de2fce.png");
-        next.setOnMouseClicked(event -> chooseRight());
-        prev.setOnMouseClicked(event -> chooseLeft());
+        try {
+            imageController = new ImageController();
+            imagesHandler = imageController.getImage();
+            setImages("0a84326a-258e-410d-acb0-75d143de2fce.png");
+            next.setOnMouseClicked(event -> chooseRight());
+            prev.setOnMouseClicked(event -> chooseLeft());
+        } catch (Exception e) {
+            errorLabel.setText(e.getMessage());
+        }
     }
 
     private void setImages(String name) {

@@ -24,6 +24,9 @@ public class ImageController {
 
     public void initialize() {
         File folder = new File(Constants.MAIN_FOLDER);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
                 .forEach(this::addImage);
     }
