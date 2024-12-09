@@ -29,8 +29,8 @@ public class MainWindowController {
     public void initialize() {
         try {
             imageController = new ImageController();
-            imagesHandler = imageController.getImage();
-            if (imageController.isFull())
+            imagesHandler = imageController.getImages();
+            if (!imageController.isEmpty())
                 updateImages();
             next.setOnMouseClicked(event -> chooseRight());
             cur.setOnMouseClicked(event -> ImageFullWindowController.openFullScreen(imagesHandler.getCur()));

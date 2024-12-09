@@ -20,7 +20,7 @@ public class ImageController {
 
     public ImageController() {
         initialize();
-        if (isFull())
+        if (!isEmpty())
             getImage(imageService.getImageByIndex(0).getName());
     }
 
@@ -38,7 +38,7 @@ public class ImageController {
         try {
             imageService.addImage(file);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -56,24 +56,34 @@ public class ImageController {
             throw new IllegalArgumentException(ConstantsError.FILE_NOT_IMAGE + fileName);
     }
 
-    public ImagesHandler getImage() {
-        return imageService.getImage();
+    public ImagesHandler getImages() {
+        return imageService.getImages();
     }
 
     public void getImage(String fileName) {
+        if (fileName.contains("."))
+            fileName = fileName.substring(0, fileName.indexOf("."));
         OptionalInt index = imageService.getIndexByFileName(fileName);
         if (index.isPresent()) {
             imageService.setCur(imageService.getImageByIndex(index.getAsInt()));
-            if (index.getAsInt() - 1 >= 0)
-                imageService.setPrev(imageService.getImageByIndex(index.getAsInt() - 1));
-            else
-                imageService.setPrev(imageService.getImageByIndex(imageService.size() - 1));
-            if (index.getAsInt() + 1 < imageService.size())
-                imageService.setNext(imageService.getImageByIndex(index.getAsInt() + 1));
-            else
-                imageService.setNext(imageService.getImageByIndex(0));
+            setPrev(index.getAsInt());
+            setNext(index.getAsInt());
         } else
             throw new IllegalArgumentException(ConstantsError.IMAGE_NOT_EXIST + fileName);
+    }
+
+    public void setPrev(int index) {
+        if (index - 1 >= 0)
+            imageService.setPrev(imageService.getImageByIndex(index - 1));
+        else
+            imageService.setPrev(imageService.getImageByIndex(imageService.size() - 1));
+    }
+
+    public void setNext(int index) {
+        if (index + 1 < imageService.size())
+            imageService.setNext(imageService.getImageByIndex(index + 1));
+        else
+            imageService.setNext(imageService.getImageByIndex(0));
     }
 
     public void saveImage(File file) throws IOException {
@@ -82,7 +92,7 @@ public class ImageController {
         Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public boolean isFull() {
-        return imageService.size() != 0;
+    public boolean isEmpty() {
+        return imageService.size() == 0;
     }
 }

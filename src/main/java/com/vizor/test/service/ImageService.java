@@ -21,13 +21,17 @@ public class ImageService {
         return images.getImages().size();
     }
 
-    public ImagesHandler getImage() {
+    public ImagesHandler getImages() {
         return images;
     }
 
     public OptionalInt getIndexByFileName(String fileName) {
         return IntStream.range(0, images.getImages().size())
-                .filter(i -> images.getImages().get(i).getName().equalsIgnoreCase(fileName))
+                .filter(i -> {
+                    String name = getImageByIndex(i).getName();
+                    name = name.substring(0, name.indexOf("."));
+                    return name.equalsIgnoreCase(fileName);
+                })
                 .findFirst();
     }
 

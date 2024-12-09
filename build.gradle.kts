@@ -13,7 +13,7 @@ repositories {
 }
 
 application {
-    mainClass.set("com.vizor.test.HelloApplication")
+    mainClass.set("com.vizor.test.MainWindow")
 }
 
 buildscript {
@@ -36,10 +36,13 @@ java {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
-dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.36")
-    annotationProcessor("org.projectlombok:lombok:1.18.36")
 
-    testCompileOnly("org.projectlombok:lombok:1.18.36")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.36")
+val lombokVersion = "1.18.36"
+
+dependencies {
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
 }
