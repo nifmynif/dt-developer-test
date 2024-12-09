@@ -10,8 +10,9 @@ import java.util.ArrayList;
 public class ImagesHandler {
 
     private final ArrayList<ImageDTO> images = new ArrayList<>();
-
+    private ImageDTO prePrev;
     private ImageDTO prev;
     private ImageDTO cur;
     private ImageDTO next;
+    private ImageDTO postNext;
 }

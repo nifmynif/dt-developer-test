@@ -17,11 +17,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
     private static final ImageService imageService = new ImageService();
+    Thread thread;
+    DownloadController downloadController;
 
     public ImageController() throws IOException {
         initialize();
+        downloadController = new DownloadController(imageService.getImages());
+        thread = new Thread(downloadController);
         if (isFolderHasPics())
-            getImage(imageService.getImageByIndex(0).getName());
+            getImageByName(imageService.getImageByIndex(0).getName());
     }
 
     public void initialize() throws IOException {
@@ -55,7 +59,7 @@ public class ImageController {
             throw new IllegalArgumentException(ConstantsError.FILE_NOT_IMAGE + fileName);
     }
 
-    public void getImage(String fileName) {
+    public void getImageByName(String fileName) {
         if (fileName.contains("."))
             fileName = fileName.substring(0, fileName.indexOf("."));
         OptionalInt index = imageService.getIndexByFileName(fileName);
@@ -65,20 +69,53 @@ public class ImageController {
             setNext(index.getAsInt());
         } else
             throw new IllegalArgumentException(ConstantsError.IMAGE_NOT_EXIST + fileName);
+        downloadController.run();
+    }
+
+    public void moveLeft() {
+        imageService.setPostNext(imageService.getNext());
+        imageService.setNext(imageService.getCur());
+        imageService.setCur(imageService.getPrev());
+        setPrev(imageService.getPrev().getPos() - 1);
+        downloadController.download();
+    }
+
+    public void moveRight() {
+        imageService.setPrePrev(imageService.getPrev());
+        imageService.setPrev(imageService.getCur());
+        imageService.setCur(imageService.getNext());
+        setNext(imageService.getNext().getPos() - 1);
+        downloadController.download();
+    }
+
+    public void close() {
+        downloadController.close();
     }
 
     public void setPrev(int index) {
-        if (index - 1 >= 0)
+        if (index - 2 >= 0) {
+            imageService.setPrePrev(imageService.getImageByIndex(index - 2));
             imageService.setPrev(imageService.getImageByIndex(index - 1));
-        else
+        } else if (index - 1 >= 0) {
+            imageService.setPrePrev(imageService.getImageByIndex(imageService.size() - 1));
+            imageService.setPrev(imageService.getImageByIndex(0));
+        } else {
+            imageService.setPrePrev(imageService.getImageByIndex(imageService.size() - 2));
             imageService.setPrev(imageService.getImageByIndex(imageService.size() - 1));
+        }
     }
 
     public void setNext(int index) {
-        if (index + 1 < imageService.size())
+        if (index + 2 < imageService.size()) {
             imageService.setNext(imageService.getImageByIndex(index + 1));
-        else
+            imageService.setPostNext(imageService.getImageByIndex(index + 2));
+        } else if (index + 1 < imageService.size()) {
+            imageService.setNext(imageService.getImageByIndex(index + 1));
+            imageService.setPostNext(imageService.getImageByIndex(0));
+        } else {
             imageService.setNext(imageService.getImageByIndex(0));
+            imageService.setPostNext(imageService.getImageByIndex(1));
+        }
     }
 
     public void saveImage(File file) throws IOException {

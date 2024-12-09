@@ -2,7 +2,6 @@ package com.vizor.test.service;
 
 import com.vizor.test.module.ImageDTO;
 import com.vizor.test.module.ImagesHandler;
-import javafx.scene.image.Image;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -13,7 +12,7 @@ public class ImageService {
     public static final ImagesHandler images = new ImagesHandler();
 
     public void addImage(File file) throws MalformedURLException {
-        ImageDTO imageDTO = new ImageDTO(file.getName(), new Image(file.toURI().toURL().toExternalForm()), size() + 1);
+        ImageDTO imageDTO = new ImageDTO(file, size() + 1);
         images.getImages().add(imageDTO);
     }
 
@@ -61,5 +60,13 @@ public class ImageService {
 
     public void setNext(ImageDTO image) {
         images.setNext(image);
+    }
+
+    public void setPostNext(ImageDTO image) {
+        images.setPostNext(image);
+    }
+
+    public void setPrePrev(ImageDTO image) {
+        images.setPrePrev(image);
     }
 }

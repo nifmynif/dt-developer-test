@@ -38,7 +38,7 @@ public class MainWindowController {
     }
 
     private void setImages(String name) {
-        imageController.getImage(name);
+        imageController.getImageByName(name);
         updateImages();
     }
 
@@ -52,11 +52,13 @@ public class MainWindowController {
     }
 
     private void chooseRight() {
-        setImages(imageController.getNext().getName());
+        imageController.moveRight();
+        updateImages();
     }
 
     private void chooseLeft() {
-        setImages(imageController.getPrev().getName());
+        imageController.moveLeft();
+        updateImages();
     }
 
     public void addButtonPress() {
@@ -75,7 +77,7 @@ public class MainWindowController {
 
     public void searchButtonPress() {
         try {
-            imageController.getImage(searchField.getText());
+            imageController.getImageByName(searchField.getText());
             updateImages();
             errorLabel.setText("");
         } catch (Exception e) {
