@@ -18,17 +18,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ImageController {
     public static final ImageService imageService = new ImageService();
 
-    public ImageController() {
+    public ImageController() throws IOException {
         initialize();
-        if (!isEmpty())
+        if (isFolderHasPics())
             getImage(imageService.getImageByIndex(0).getName());
     }
 
-    public void initialize() {
+    public void initialize() throws IOException {
         File folder = new File(Constants.MAIN_FOLDER);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
+        if (!folder.exists() && !folder.mkdirs())
+            throw new IOException(ConstantsError.FOLDER_CREATE_ERROR);
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
                 .forEach(this::addImage);
     }
@@ -92,7 +91,7 @@ public class ImageController {
         Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public boolean isEmpty() {
-        return imageService.size() == 0;
+    public boolean isFolderHasPics() {
+        return imageService.size() != 0;
     }
 }

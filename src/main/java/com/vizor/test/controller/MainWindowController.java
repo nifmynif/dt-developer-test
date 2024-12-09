@@ -30,7 +30,7 @@ public class MainWindowController {
         try {
             imageController = new ImageController();
             imagesHandler = imageController.getImages();
-            if (!imageController.isEmpty())
+            if (imageController.isFolderHasPics())
                 updateImages();
             next.setOnMouseClicked(event -> chooseRight());
             cur.setOnMouseClicked(event -> ImageFullWindowController.openFullScreen(imagesHandler.getCur()));
