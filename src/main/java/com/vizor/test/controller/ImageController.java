@@ -2,7 +2,7 @@ package com.vizor.test.controller;
 
 import com.vizor.test.constants.Constants;
 import com.vizor.test.constants.ConstantsError;
-import com.vizor.test.module.ImagesHandler;
+import com.vizor.test.module.ImageDTO;
 import com.vizor.test.service.ImageService;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
-    public static final ImageService imageService = new ImageService();
+    private static final ImageService imageService = new ImageService();
 
     public ImageController() throws IOException {
         initialize();
@@ -55,10 +55,6 @@ public class ImageController {
             throw new IllegalArgumentException(ConstantsError.FILE_NOT_IMAGE + fileName);
     }
 
-    public ImagesHandler getImages() {
-        return imageService.getImages();
-    }
-
     public void getImage(String fileName) {
         if (fileName.contains("."))
             fileName = fileName.substring(0, fileName.indexOf("."));
@@ -93,5 +89,17 @@ public class ImageController {
 
     public boolean isFolderHasPics() {
         return imageService.size() != 0;
+    }
+
+    public ImageDTO getCur() {
+        return imageService.getCur();
+    }
+
+    public ImageDTO getPrev() {
+        return imageService.getPrev();
+    }
+
+    public ImageDTO getNext() {
+        return imageService.getNext();
     }
 }

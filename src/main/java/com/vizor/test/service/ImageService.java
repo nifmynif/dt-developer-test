@@ -47,6 +47,18 @@ public class ImageService {
         images.setPrev(image);
     }
 
+    public ImageDTO getNext() {
+        return images.getNext();
+    }
+
+    public ImageDTO getCur() {
+        return images.getCur();
+    }
+
+    public ImageDTO getPrev() {
+        return images.getPrev();
+    }
+
     public void setNext(ImageDTO image) {
         images.setNext(image);
     }
