@@ -10,13 +10,13 @@ import java.util.concurrent.Executors;
 @AllArgsConstructor
 public class DownloadController implements Runnable {
     private ImagesHandler imagesHandler;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public void download() {
         executorService.execute(this);
     }
 
-    public void close() {
+    public static void close() {
         executorService.shutdown();
     }
 

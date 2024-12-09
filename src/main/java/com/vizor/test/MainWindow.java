@@ -1,5 +1,6 @@
 package com.vizor.test;
 
+import com.vizor.test.controller.DownloadController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +19,7 @@ public class MainWindow extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Image Gallery!");
         stage.setScene(scene);
+        stage.setOnCloseRequest(event -> DownloadController.close());
         stage.show();
     }
 }
