@@ -33,6 +33,7 @@ public class MainWindowController {
             if (imageController.isFull())
                 updateImages();
             next.setOnMouseClicked(event -> chooseRight());
+            cur.setOnMouseClicked(event -> ImageFullWindowController.openFullScreen(imagesHandler.getCur()));
             prev.setOnMouseClicked(event -> chooseLeft());
         } catch (Exception e) {
             errorLabel.setText(e.getMessage());
