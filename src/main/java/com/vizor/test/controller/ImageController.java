@@ -7,7 +7,6 @@ import com.vizor.test.service.ImageService;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
@@ -17,13 +16,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
     private static final ImageService imageService = new ImageService();
-    Thread thread;
     DownloadController downloadController;
 
     public ImageController() throws IOException {
         initialize();
         downloadController = new DownloadController(imageService.getImages());
-        thread = new Thread(downloadController);
         if (isFolderHasPics())
             getImageByName(imageService.getImageByIndex(0).getName());
     }
@@ -38,11 +35,7 @@ public class ImageController {
 
     private void addImage(File file) {
         checkImage(file);
-        try {
-            imageService.addImage(file);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        imageService.addImage(file);
     }
 
     private void checkImage(File file) throws IllegalArgumentException {
@@ -69,7 +62,7 @@ public class ImageController {
             setNext(index.getAsInt());
         } else
             throw new IllegalArgumentException(ConstantsError.IMAGE_NOT_EXIST + fileName);
-        downloadController.run();
+        downloadController.download();
     }
 
     public void moveLeft() {
@@ -86,10 +79,6 @@ public class ImageController {
         imageService.setCur(imageService.getNext());
         setNext(imageService.getNext().getPos() - 1);
         downloadController.download();
-    }
-
-    public void close() {
-        downloadController.close();
     }
 
     public void setPrev(int index) {

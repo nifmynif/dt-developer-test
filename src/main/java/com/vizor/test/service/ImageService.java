@@ -4,14 +4,13 @@ import com.vizor.test.module.ImageDTO;
 import com.vizor.test.module.ImagesHandler;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 public class ImageService {
     public static final ImagesHandler images = new ImagesHandler();
 
-    public void addImage(File file) throws MalformedURLException {
+    public void addImage(File file) {
         ImageDTO imageDTO = new ImageDTO(file, size() + 1);
         images.getImages().add(imageDTO);
     }

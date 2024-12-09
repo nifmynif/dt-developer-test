@@ -22,6 +22,7 @@ public class ImageDTO {
     }
 
     public void setImage() throws MalformedURLException {
-        this.image = new Image(file.toURI().toURL().toExternalForm());
+        if (image == null)
+            this.image = new Image(file.toURI().toURL().toExternalForm());
     }
 }
