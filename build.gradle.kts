@@ -13,7 +13,7 @@ repositories {
 }
 
 application {
-    mainClass.set("com.vizor.test.Main")
+    mainClass.set("com.vizor.test.HelloApplication")
 }
 
 buildscript {
