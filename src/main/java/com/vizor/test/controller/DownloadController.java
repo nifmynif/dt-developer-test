@@ -1,5 +1,6 @@
 package com.vizor.test.controller;
 
+import com.vizor.test.exceptions.MyInterruptedExeprion;
 import com.vizor.test.module.ImageDTO;
 import com.vizor.test.module.ImagesHandler;
 
@@ -29,7 +30,7 @@ public class DownloadController implements Callable<Void> {
             executorService.invokeAll(tasks);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+            throw new MyInterruptedExeprion(e.getMessage());
         }
     }
 

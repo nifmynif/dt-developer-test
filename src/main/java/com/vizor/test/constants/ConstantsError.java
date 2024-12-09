@@ -1,8 +1,9 @@
 package com.vizor.test.constants;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class ConstantsError {
-    private ConstantsError() {
-    }
 
     public static final String FILE_NOT_EXIST = "Файл не существует или это не файл: ";
     public static final String FILE_NOT_IMAGE = "Это не картинка: ";

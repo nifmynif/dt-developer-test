@@ -1,14 +1,15 @@
 package com.vizor.test.constants;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+@UtilityClass
 public class Constants {
-    private Constants() {
-    }
 
     private static final Properties properties = new Properties();
     public static final List<String> EXTENSION_IMAGE;
