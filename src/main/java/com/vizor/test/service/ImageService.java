@@ -2,13 +2,19 @@ package com.vizor.test.service;
 
 import com.vizor.test.module.ImageDTO;
 import com.vizor.test.module.ImagesHandler;
+import lombok.Getter;
 
 import java.io.File;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
+@Getter
 public class ImageService {
-    public static final ImagesHandler images = new ImagesHandler();
+    public final ImagesHandler images;
+
+    public ImageService(int capacity) {
+        this.images = new ImagesHandler(capacity);
+    }
 
     public void addImage(File file) {
         ImageDTO imageDTO = new ImageDTO(file, size() + 1);
@@ -21,10 +27,6 @@ public class ImageService {
 
     public int size() {
         return images.getImages().size();
-    }
-
-    public ImagesHandler getImages() {
-        return images;
     }
 
     public OptionalInt getIndexByFileName(String fileName) {

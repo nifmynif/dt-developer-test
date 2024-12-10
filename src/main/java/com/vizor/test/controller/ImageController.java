@@ -15,7 +15,7 @@ import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
-    private static final ImageService imageService = new ImageService();
+    private ImageService imageService;
     private final DownloadController downloadController;
     private final String folderPath;
 
@@ -33,6 +33,7 @@ public class ImageController {
             LogController.logError(ConstantsError.FOLDER_CREATE_ERROR, this);
             throw new IOException(ConstantsError.FOLDER_CREATE_ERROR);
         }
+        imageService = new ImageService(Objects.requireNonNull(folder.listFiles()).length);
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
                 .forEach(this::addImage);
         LogController.logInfo("Массив заполнен " + imageService.size() + " элементов", this);

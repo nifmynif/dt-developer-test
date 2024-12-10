@@ -8,11 +8,14 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class ImagesHandler {
-
-    private final ArrayList<ImageDTO> images = new ArrayList<>();
+    private final ArrayList<ImageDTO> images;
     private ImageDTO prePrev;
     private ImageDTO prev;
     private ImageDTO cur;
     private ImageDTO next;
     private ImageDTO postNext;
+
+    public ImagesHandler(int capacity) {
+        this.images = new ArrayList<>(capacity);
+    }
 }
