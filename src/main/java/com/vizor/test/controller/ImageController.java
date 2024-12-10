@@ -129,7 +129,9 @@ public class ImageController {
         Files.delete(getCur().getFile().toPath());
         LogController.logInfo("Картинка " + getCur().getName() + " удалена", this);
         imageService.deleteImage(getCur());
-        moveRight();
+        imageService.setCur(imageService.getNext());
+        setNext(imageService.getNext().getPos() - 1);
+        downloadController.download();
     }
 
     public boolean isFolderHasPics() {

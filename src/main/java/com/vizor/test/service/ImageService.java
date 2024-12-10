@@ -14,6 +14,7 @@ public class ImageService {
         ImageDTO imageDTO = new ImageDTO(file, size() + 1);
         images.getImages().add(imageDTO);
     }
+
     public void deleteImage(ImageDTO imageDTO) {
         images.getImages().remove(imageDTO);
     }
@@ -66,6 +67,10 @@ public class ImageService {
 
     public void setPostNext(ImageDTO image) {
         images.setPostNext(image);
+    }
+
+    public ImageDTO getPostNext() {
+        return images.getPostNext();
     }
 
     public void setPrePrev(ImageDTO image) {

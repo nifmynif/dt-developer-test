@@ -10,6 +10,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainWindowController {
     public TextField searchField;
@@ -22,6 +23,7 @@ public class MainWindowController {
     public Label curLabel;
     public Label prevLabel;
     public Label errorLabel;
+    public Button del;
     private ImageController imageController;
 
     @FXML
@@ -84,5 +86,10 @@ public class MainWindowController {
         } catch (Exception e) {
             errorLabel.setText(e.getMessage());
         }
+    }
+
+    public void delButtonPress() throws IOException {
+        imageController.deleteImage();
+        updateImages();
     }
 }
