@@ -140,14 +140,14 @@ public class ImageController {
             File destinationFile = new File(folderPath, file.getName());
             Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             addImage(destinationFile);
-            LogController.logInfo("Картинка " + file.getName() + " сохранена", this);
+            LogController.logInfo(ConstantsError.PICTURE + file.getName() + " сохранена", this);
         }
-        LogController.logInfo("Картинка " + file.getName() + " уже есть", this);
+        LogController.logInfo(ConstantsError.PICTURE + file.getName() + " уже есть", this);
     }
 
     public void deleteImage() throws IOException {
         Files.delete(getCur().getFile().toPath());
-        LogController.logInfo("Картинка " + getCur().getName() + " удалена", this);
+        LogController.logInfo(ConstantsError.PICTURE + getCur().getName() + " удалена", this);
         imageService.deleteImage(getCur());
         imageService.setCur(imageService.getNext());
         setNext(imageService.getNext().getPos() - 1);
