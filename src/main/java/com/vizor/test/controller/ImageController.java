@@ -11,11 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.OptionalInt;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
-    private static final ImageService imageService = new ImageService();
+    private ImageService imageService;
     private final DownloadController downloadController;
     private final String folderPath;
 
@@ -33,23 +32,22 @@ public class ImageController {
             LogController.logError(ConstantsError.FOLDER_CREATE_ERROR, this);
             throw new IOException(ConstantsError.FOLDER_CREATE_ERROR);
         }
+        imageService = new ImageService(Objects.requireNonNull(folder.listFiles()).length);
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
-                .forEach(this::addImage);
+                .forEach(file -> {
+                    checkImage(file);
+                    imageService.addImage(file);
+                });
         LogController.logInfo("Массив заполнен " + imageService.size() + " элементов", this);
     }
 
-    private void addImage(File file) {
-        checkImage(file);
-        imageService.addImage(file);
-    }
-
     private void checkImage(File file) throws IllegalArgumentException {
+        if (file == null || !file.isFile() || !file.exists()) {
+            LogController.logWarn(ConstantsError.FILE_NOT_EXIST, this);
+            throw new IllegalArgumentException(ConstantsError.FILE_NOT_EXIST);
+        }
         String fileName = file.getName();
         AtomicBoolean isImage = new AtomicBoolean(false);
-        if (!file.isFile() || !file.exists()) {
-            LogController.logWarn(ConstantsError.FILE_NOT_EXIST + fileName, this);
-            throw new IllegalArgumentException(ConstantsError.FILE_NOT_EXIST + fileName);
-        }
         Constants.EXTENSION_IMAGE.forEach(ext -> {
             if (fileName.toLowerCase().endsWith(ext))
                 isImage.set(true);
@@ -61,13 +59,11 @@ public class ImageController {
     }
 
     public void getImageByName(String fileName) {
-        if (fileName.contains("."))
-            fileName = fileName.substring(0, fileName.indexOf("."));
-        OptionalInt index = imageService.getIndexByFileName(fileName);
-        if (index.isPresent()) {
-            imageService.setCur(imageService.getImageByIndex(index.getAsInt()));
-            setPrev(index.getAsInt());
-            setNext(index.getAsInt());
+        int index = getIndexByFileName(fileName);
+        if (index >= 0) {
+            imageService.setCur(imageService.getImageByIndex(index));
+            setPrev(index);
+            setNext(index);
         } else {
             LogController.logWarn(ConstantsError.IMAGE_NOT_EXIST + fileName, this);
             throw new IllegalArgumentException(ConstantsError.IMAGE_NOT_EXIST + fileName);
@@ -75,11 +71,15 @@ public class ImageController {
         downloadController.download();
     }
 
+    public int getIndexByFileName(String name) {
+        return imageService.getIndexByFileName(name);
+    }
+
     public void moveLeft() {
         imageService.setPostNext(imageService.getNext());
         imageService.setNext(imageService.getCur());
         imageService.setCur(imageService.getPrev());
-        setPrev(imageService.getPrev().getPos() - 1);
+        setPrev(imageService.getIndexByFileName(getPrev().getName()));
         downloadController.download();
     }
 
@@ -87,7 +87,7 @@ public class ImageController {
         imageService.setPrePrev(imageService.getPrev());
         imageService.setPrev(imageService.getCur());
         imageService.setCur(imageService.getNext());
-        setNext(imageService.getNext().getPos() - 1);
+        setNext(imageService.getIndexByFileName(getNext().getName()));
         downloadController.download();
     }
 
@@ -139,18 +139,18 @@ public class ImageController {
         } catch (IllegalArgumentException e) {
             File destinationFile = new File(folderPath, file.getName());
             Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            addImage(destinationFile);
-            LogController.logInfo("Картинка " + file.getName() + " сохранена", this);
+            imageService.addImage(destinationFile);
+            LogController.logInfo(ConstantsError.PICTURE + file.getName() + " сохранена", this);
         }
-        LogController.logInfo("Картинка " + file.getName() + " уже есть", this);
+        getImageByName(file.getName());
     }
 
     public void deleteImage() throws IOException {
         Files.delete(getCur().getFile().toPath());
-        LogController.logInfo("Картинка " + getCur().getName() + " удалена", this);
         imageService.deleteImage(getCur());
+        LogController.logInfo(ConstantsError.PICTURE + getCur().getName() + " удалена", this);
         imageService.setCur(imageService.getNext());
-        setNext(imageService.getNext().getPos() - 1);
+        setNext(imageService.getIndexByFileName(imageService.getPostNext().getName()) - 1);
         downloadController.download();
     }
 

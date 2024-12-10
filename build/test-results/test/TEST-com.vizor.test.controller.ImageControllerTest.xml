@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.vizor.test.controller.ImageControllerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2024-12-10T11:55:45" hostname="NIFMYNIF" time="0.096">
+<testsuite name="com.vizor.test.controller.ImageControllerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2024-12-10T17:48:12" hostname="NIFMYNIF" time="0.116">
   <properties/>
-  <testcase name="ErrorSaveNullFile()" classname="com.vizor.test.controller.ImageControllerTest" time="0.018"/>
-  <testcase name="moveLeft()" classname="com.vizor.test.controller.ImageControllerTest" time="0.009"/>
-  <testcase name="saveImage()" classname="com.vizor.test.controller.ImageControllerTest" time="0.012"/>
-  <testcase name="getImageByName()" classname="com.vizor.test.controller.ImageControllerTest" time="0.015"/>
-  <testcase name="moveRight()" classname="com.vizor.test.controller.ImageControllerTest" time="0.011"/>
-  <testcase name="isFolderHasPics()" classname="com.vizor.test.controller.ImageControllerTest" time="0.003"/>
-  <testcase name="errorGetImageByName()" classname="com.vizor.test.controller.ImageControllerTest" time="0.005"/>
+  <testcase name="ErrorSaveNullFile()" classname="com.vizor.test.controller.ImageControllerTest" time="0.022"/>
+  <testcase name="moveLeft()" classname="com.vizor.test.controller.ImageControllerTest" time="0.013"/>
+  <testcase name="saveImage()" classname="com.vizor.test.controller.ImageControllerTest" time="0.028"/>
+  <testcase name="getImageByName()" classname="com.vizor.test.controller.ImageControllerTest" time="0.006"/>
+  <testcase name="moveRight()" classname="com.vizor.test.controller.ImageControllerTest" time="0.008"/>
+  <testcase name="isFolderHasPics()" classname="com.vizor.test.controller.ImageControllerTest" time="0.006"/>
+  <testcase name="errorGetImageByName()" classname="com.vizor.test.controller.ImageControllerTest" time="0.007"/>
   <testcase name="errorSaveInk()" classname="com.vizor.test.controller.ImageControllerTest" time="0.006"/>
-  <system-out><![CDATA[14:55:45 INFO  - class com.vizor.test.controller.ImageController Массив заполнен 5 элементов
-14:55:45 WARN  - class com.vizor.test.controller.ImageController Файл не существует или это не файл: 
-14:55:45 WARN  - class com.vizor.test.controller.ImageController Такой Картинки не существует: 1632938986199138400
-14:55:45 INFO  - class com.vizor.test.controller.ImageController Картинка 1632938986199138400.jpg сохранена
-14:55:45 INFO  - class com.vizor.test.controller.ImageController Картинка 1632938986199138400.jpg уже есть
-14:55:45 INFO  - class com.vizor.test.controller.ImageController Картинка 1632938986199138400.jpg удалена
-14:55:45 WARN  - class com.vizor.test.controller.ImageController Такой Картинки не существует: 
-14:55:45 WARN  - class com.vizor.test.controller.ImageController Это не картинка: IntelliJ IDEA Community Edition 2024.3.lnk
+  <system-out><![CDATA[20:48:11 INFO  - class com.vizor.test.controller.ImageController Массив заполнен 5 элементов
+20:48:12 WARN  - class com.vizor.test.controller.ImageController Файл не существует или это не файл
+20:48:12 WARN  - class com.vizor.test.controller.ImageController Такой Картинки не существует: 1632938986199138400.jpg
+20:48:12 INFO  - class com.vizor.test.controller.ImageController Картинка 1632938986199138400.jpg сохранена
+20:48:12 INFO  - class com.vizor.test.controller.ImageController Картинка 1632938986199138400.jpg удалена
+20:48:12 WARN  - class com.vizor.test.controller.ImageController Такой Картинки не существует: 
+20:48:12 WARN  - class com.vizor.test.controller.ImageController Это не картинка: IntelliJ IDEA Community Edition 2024.3.lnk
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
