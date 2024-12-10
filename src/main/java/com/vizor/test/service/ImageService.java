@@ -5,8 +5,7 @@ import com.vizor.test.module.ImagesHandler;
 import lombok.Getter;
 
 import java.io.File;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
+import java.util.Collections;
 
 @Getter
 public class ImageService {
@@ -17,8 +16,10 @@ public class ImageService {
     }
 
     public void addImage(File file) {
-        ImageDTO imageDTO = new ImageDTO(file, size() + 1);
-        images.getImages().add(imageDTO);
+        int index = getIndexByFileName(file.getName());
+        if (index < 0)
+            index = -index - 1;
+        images.getImages().add(index, new ImageDTO(file));
     }
 
     public void deleteImage(ImageDTO imageDTO) {
@@ -29,14 +30,8 @@ public class ImageService {
         return images.getImages().size();
     }
 
-    public OptionalInt getIndexByFileName(String fileName) {
-        return IntStream.range(0, images.getImages().size())
-                .filter(i -> {
-                    String name = getImageByIndex(i).getName();
-                    name = name.substring(0, name.indexOf("."));
-                    return name.equalsIgnoreCase(fileName);
-                })
-                .findFirst();
+    public int getIndexByFileName(String fileName) {
+        return Collections.binarySearch(images.getImages(), fileName);
     }
 
     public ImageDTO getImageByIndex(int index) {

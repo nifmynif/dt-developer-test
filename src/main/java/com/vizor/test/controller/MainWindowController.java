@@ -40,21 +40,19 @@ public class MainWindowController {
         }
     }
 
-    private void setImages(String name) {
-        imageController.getImageByName(name);
-        updateImages();
-    }
-
     private void updateImages() {
         if (imageController.getPrev() != null) {
             prev.setImage(imageController.getPrev().getImage());
-            prevLabel.setText(String.valueOf(imageController.getPrev().getPos()));
+            prevLabel.setText(String.valueOf(
+                    imageController.getIndexByFileName(imageController.getPrev().getName()) + 1));
         }
         cur.setImage(imageController.getCur().getImage());
-        curLabel.setText(String.valueOf(imageController.getCur().getPos()));
+        curLabel.setText(String.valueOf(
+                imageController.getIndexByFileName(imageController.getCur().getName()) + 1));
         if (imageController.getNext() != null) {
             next.setImage(imageController.getNext().getImage());
-            nextLabel.setText(String.valueOf(imageController.getNext().getPos()));
+            nextLabel.setText(String.valueOf(
+                    imageController.getIndexByFileName(imageController.getNext().getName()) + 1));
         }
     }
 
@@ -75,7 +73,7 @@ public class MainWindowController {
             Stage stage = new Stage();
             File selectedFile = fileChooser.showOpenDialog(stage);
             imageController.saveImage(selectedFile);
-            setImages(selectedFile.getName());
+            updateImages();
             errorLabel.setText("");
         } catch (Exception e) {
             errorLabel.setText(e.getMessage());
