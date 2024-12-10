@@ -17,7 +17,7 @@ public class Constants {
     public static final String MAIN_FOLDER;
 
     static {
-        try (FileInputStream fis = new FileInputStream("properties/Main.properties")) {
+        try (FileInputStream fis = new FileInputStream("src/main/resources/Main.properties")) {
             properties.load(fis);
             EXTENSION_IMAGE = Stream.of(properties.getProperty("EXTENSION_IMAGE").split(","))
                     .toList();

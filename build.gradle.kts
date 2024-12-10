@@ -40,13 +40,27 @@ java {
 val lombokVersion = "1.18.36"
 val slf4jVersion = "2.0.16"
 val logbackjVersion = "1.4.12"
+val junitVersion = "5.10.2"
 
 dependencies {
     compileOnly("org.projectlombok:lombok:$lombokVersion")
+
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("ch.qos.logback:logback-classic:$logbackjVersion")
-    testImplementation("group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26")
+    implementation ("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+
+    testImplementation("ch.qos.logback:logback-classic:$logbackjVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+
     testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+
     testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

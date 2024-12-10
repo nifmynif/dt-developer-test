@@ -14,6 +14,9 @@ public class ImageService {
         ImageDTO imageDTO = new ImageDTO(file, size() + 1);
         images.getImages().add(imageDTO);
     }
+    public void deleteImage(ImageDTO imageDTO) {
+        images.getImages().remove(imageDTO);
+    }
 
     public int size() {
         return images.getImages().size();

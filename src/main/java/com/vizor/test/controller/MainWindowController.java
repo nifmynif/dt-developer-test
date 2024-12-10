@@ -1,5 +1,6 @@
 package com.vizor.test.controller;
 
+import com.vizor.test.constants.Constants;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -26,7 +27,7 @@ public class MainWindowController {
     @FXML
     public void initialize() {
         try {
-            imageController = new ImageController();
+            imageController = new ImageController(Constants.MAIN_FOLDER);
             if (imageController.isFolderHasPics())
                 updateImages();
             next.setOnMouseClicked(event -> chooseRight());

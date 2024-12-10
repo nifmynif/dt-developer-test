@@ -16,17 +16,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ImageController {
     private static final ImageService imageService = new ImageService();
-    DownloadController downloadController;
+    private final DownloadController downloadController;
+    private final String folderPath;
 
-    public ImageController() throws IOException {
-        initialize();
+    public ImageController(String folderPath) throws IOException {
+        this.folderPath = folderPath;
+        initialize(folderPath);
         downloadController = new DownloadController(imageService.getImages());
         if (isFolderHasPics())
             getImageByName(imageService.getImageByIndex(0).getName());
     }
 
-    public void initialize() throws IOException {
-        File folder = new File(Constants.MAIN_FOLDER);
+    private void initialize(String folderPath) throws IOException {
+        File folder = new File(folderPath);
         if (!folder.exists() && !folder.mkdirs()) {
             LogController.logError(ConstantsError.FOLDER_CREATE_ERROR, this);
             throw new IOException(ConstantsError.FOLDER_CREATE_ERROR);
@@ -89,7 +91,7 @@ public class ImageController {
         downloadController.download();
     }
 
-    public void setPrev(int index) {
+    private void setPrev(int index) {
         if (index - 2 >= 0) {
             imageService.setPrePrev(imageService.getImageByIndex(index - 2));
             imageService.setPrev(imageService.getImageByIndex(index - 1));
@@ -102,7 +104,7 @@ public class ImageController {
         }
     }
 
-    public void setNext(int index) {
+    private void setNext(int index) {
         if (index + 2 < imageService.size()) {
             imageService.setNext(imageService.getImageByIndex(index + 1));
             imageService.setPostNext(imageService.getImageByIndex(index + 2));
@@ -116,10 +118,18 @@ public class ImageController {
     }
 
     public void saveImage(File file) throws IOException {
-        addImage(file);
-        File destinationFile = new File(Constants.MAIN_FOLDER, file.getName());
+        checkImage(file);
+        File destinationFile = new File(folderPath, file.getName());
         Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        addImage(destinationFile);
         LogController.logInfo("Картинка " + file.getName() + " сохранена", this);
+    }
+
+    public void deleteImage() throws IOException {
+        Files.delete(getCur().getFile().toPath());
+        LogController.logInfo("Картинка " + getCur().getName() + " удалена", this);
+        imageService.deleteImage(getCur());
+        moveRight();
     }
 
     public boolean isFolderHasPics() {
