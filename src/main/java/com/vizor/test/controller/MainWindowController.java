@@ -1,6 +1,7 @@
 package com.vizor.test.controller;
 
 import com.vizor.test.constants.Constants;
+import com.vizor.test.module.ImageDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -41,18 +42,27 @@ public class MainWindowController {
     }
 
     private void updateImages() {
-        if (imageController.getPrev() != null) {
-            prev.setImage(imageController.getPrev().getImage());
-            prevLabel.setText(String.valueOf(
-                    imageController.getIndexByFileName(imageController.getPrev().getName()) + 1));
+        if (imageController.getPrev() != null)
+            fill(prev, prevLabel, imageController.getPrev());
+        if (imageController.getCur() != null)
+            fill(cur, curLabel, imageController.getCur());
+        else {
+            fill(cur, curLabel, new ImageDTO());
+            fill(prev, prevLabel, new ImageDTO());
+            fill(next, nextLabel, new ImageDTO());
         }
-        cur.setImage(imageController.getCur().getImage());
-        curLabel.setText(String.valueOf(
-                imageController.getIndexByFileName(imageController.getCur().getName()) + 1));
-        if (imageController.getNext() != null) {
-            next.setImage(imageController.getNext().getImage());
-            nextLabel.setText(String.valueOf(
-                    imageController.getIndexByFileName(imageController.getNext().getName()) + 1));
+        if (imageController.getNext() != null)
+            fill(next, nextLabel, imageController.getNext());
+    }
+
+    private void fill(ImageView imageView, Label label, ImageDTO imageDTO) {
+        if (imageDTO.isEmpty()) {
+            imageView.setImage(null);
+            label.setText(null);
+        } else {
+            imageView.setImage(imageDTO.getImage());
+            label.setText(String.valueOf(
+                    imageController.getIndexByFileName(imageDTO.getName()) + 1));
         }
     }
 
@@ -91,7 +101,9 @@ public class MainWindowController {
     }
 
     public void delButtonPress() throws IOException {
-        imageController.deleteImage();
-        updateImages();
+        if (imageController.getCur() != null) {
+            imageController.deleteImage();
+            updateImages();
+        }
     }
 }

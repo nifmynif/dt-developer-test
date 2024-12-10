@@ -2,18 +2,24 @@ package com.vizor.test.module;
 
 import com.vizor.test.controller.LogController;
 import javafx.scene.image.Image;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
-@AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @EqualsAndHashCode
 public class ImageDTO implements Comparable<String> {
-    private final File file;
+    private File file;
     private Image image;
+
+    public ImageDTO(File file) {
+        this.file = file;
+    }
 
     public String getName() {
         return file.getName();
@@ -34,5 +40,9 @@ public class ImageDTO implements Comparable<String> {
         if (name.contains("."))
             name = name.substring(0, name.indexOf("."));
         return fileName.compareToIgnoreCase(name);
+    }
+
+    public boolean isEmpty() {
+        return file == null;
     }
 }

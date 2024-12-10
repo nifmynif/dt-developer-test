@@ -76,17 +76,17 @@ public class ImageController {
     }
 
     public void moveLeft() {
-        imageService.setPostNext(imageService.getNext());
-        imageService.setNext(imageService.getCur());
-        imageService.setCur(imageService.getPrev());
+        imageService.setPostNext(getNext());
+        imageService.setNext(getCur());
+        imageService.setCur(getPrev());
         setPrev(imageService.getIndexByFileName(getPrev().getName()));
         downloadController.download();
     }
 
     public void moveRight() {
-        imageService.setPrePrev(imageService.getPrev());
-        imageService.setPrev(imageService.getCur());
-        imageService.setCur(imageService.getNext());
+        imageService.setPrePrev(getPrev());
+        imageService.setPrev(getCur());
+        imageService.setCur(getNext());
         setNext(imageService.getIndexByFileName(getNext().getName()));
         downloadController.download();
     }
@@ -147,10 +147,13 @@ public class ImageController {
 
     public void deleteImage() throws IOException {
         Files.delete(getCur().getFile().toPath());
+        String name = getCur().getName();
         imageService.deleteImage(getCur());
-        LogController.logInfo(ConstantsError.PICTURE + getCur().getName() + " удалена", this);
-        imageService.setCur(imageService.getNext());
-        setNext(imageService.getIndexByFileName(imageService.getPostNext().getName()) - 1);
+        LogController.logInfo(ConstantsError.PICTURE + name + " удалена", this);
+        if (imageService.size() > 0)
+            imageService.setCur(getNext());
+        if (imageService.getPostNext() != null)
+            setNext(imageService.getIndexByFileName(imageService.getPostNext().getName()) - 1);
         downloadController.download();
     }
 
