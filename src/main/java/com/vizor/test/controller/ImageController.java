@@ -27,10 +27,13 @@ public class ImageController {
 
     public void initialize() throws IOException {
         File folder = new File(Constants.MAIN_FOLDER);
-        if (!folder.exists() && !folder.mkdirs())
+        if (!folder.exists() && !folder.mkdirs()) {
+            LogController.logError(ConstantsError.FOLDER_CREATE_ERROR, this);
             throw new IOException(ConstantsError.FOLDER_CREATE_ERROR);
+        }
         Arrays.stream(Objects.requireNonNull(folder.listFiles()))
                 .forEach(this::addImage);
+        LogController.logInfo("Массив заполнен " + imageService.size() + " элементов", this);
     }
 
     private void addImage(File file) {
@@ -41,15 +44,18 @@ public class ImageController {
     private void checkImage(File file) throws IllegalArgumentException {
         String fileName = file.getName();
         AtomicBoolean isImage = new AtomicBoolean(false);
-        if (!file.isFile() ||
-                !file.exists())
+        if (!file.isFile() || !file.exists()) {
+            LogController.logWarn(ConstantsError.FILE_NOT_EXIST + fileName, this);
             throw new IllegalArgumentException(ConstantsError.FILE_NOT_EXIST + fileName);
+        }
         Constants.EXTENSION_IMAGE.forEach(ext -> {
             if (fileName.toLowerCase().endsWith(ext))
                 isImage.set(true);
         });
-        if (!isImage.get())
+        if (!isImage.get()) {
+            LogController.logWarn(ConstantsError.FILE_NOT_IMAGE + fileName, this);
             throw new IllegalArgumentException(ConstantsError.FILE_NOT_IMAGE + fileName);
+        }
     }
 
     public void getImageByName(String fileName) {
@@ -60,8 +66,10 @@ public class ImageController {
             imageService.setCur(imageService.getImageByIndex(index.getAsInt()));
             setPrev(index.getAsInt());
             setNext(index.getAsInt());
-        } else
+        } else {
+            LogController.logWarn(ConstantsError.IMAGE_NOT_EXIST + fileName, this);
             throw new IllegalArgumentException(ConstantsError.IMAGE_NOT_EXIST + fileName);
+        }
         downloadController.download();
     }
 
@@ -111,6 +119,7 @@ public class ImageController {
         addImage(file);
         File destinationFile = new File(Constants.MAIN_FOLDER, file.getName());
         Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        LogController.logInfo("Картинка " + file.getName() + " сохранена", this);
     }
 
     public boolean isFolderHasPics() {

@@ -1,5 +1,6 @@
 package com.vizor.test.module;
 
+import com.vizor.test.controller.LogController;
 import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,9 @@ public class ImageDTO {
     }
 
     public void setImage() throws MalformedURLException {
-        if (image == null)
+        if (image == null) {
             this.image = new Image(file.toURI().toURL().toExternalForm());
+            LogController.logInfo("Картинка " + getName() + " скачана", this);
+        }
     }
 }

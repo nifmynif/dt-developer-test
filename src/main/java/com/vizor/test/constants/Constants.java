@@ -1,5 +1,6 @@
 package com.vizor.test.constants;
 
+import com.vizor.test.controller.LogController;
 import lombok.experimental.UtilityClass;
 
 import java.io.FileInputStream;
@@ -22,6 +23,7 @@ public class Constants {
                     .toList();
             MAIN_FOLDER = properties.getProperty("MAIN_FOLDER", "assets");
         } catch (IOException e) {
+            LogController.logError(e.getMessage(), Constants.class);
             throw new IllegalArgumentException(e);
         }
     }

@@ -1,6 +1,6 @@
 package com.vizor.test.controller;
 
-import com.vizor.test.exceptions.MyInterruptedExeprion;
+import com.vizor.test.exceptions.MyInterruptedException;
 import com.vizor.test.module.ImageDTO;
 import com.vizor.test.module.ImagesHandler;
 
@@ -30,7 +30,8 @@ public class DownloadController implements Callable<Void> {
             executorService.invokeAll(tasks);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new MyInterruptedExeprion(e.getMessage());
+            LogController.logError(e.getMessage(), this);
+            throw new MyInterruptedException(e.getMessage());
         }
     }
 
@@ -50,6 +51,7 @@ public class DownloadController implements Callable<Void> {
                     imageDTO.setImage();
                     return null;
                 } catch (MalformedURLException e) {
+                    LogController.logError(e.getMessage(), this);
                     throw new IllegalArgumentException(e);
                 }
             });
