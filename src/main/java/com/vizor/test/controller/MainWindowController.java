@@ -46,12 +46,16 @@ public class MainWindowController {
     }
 
     private void updateImages() {
-        prev.setImage(imageController.getPrev().getImage());
-        prevLabel.setText(String.valueOf(imageController.getPrev().getPos()));
+        if (imageController.getPrev() != null) {
+            prev.setImage(imageController.getPrev().getImage());
+            prevLabel.setText(String.valueOf(imageController.getPrev().getPos()));
+        }
         cur.setImage(imageController.getCur().getImage());
         curLabel.setText(String.valueOf(imageController.getCur().getPos()));
-        next.setImage(imageController.getNext().getImage());
-        nextLabel.setText(String.valueOf(imageController.getNext().getPos()));
+        if (imageController.getNext() != null) {
+            next.setImage(imageController.getNext().getImage());
+            nextLabel.setText(String.valueOf(imageController.getNext().getPos()));
+        }
     }
 
     private void chooseRight() {

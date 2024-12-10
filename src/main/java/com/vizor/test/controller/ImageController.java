@@ -92,37 +92,57 @@ public class ImageController {
     }
 
     private void setPrev(int index) {
-        if (index - 2 >= 0) {
-            imageService.setPrePrev(imageService.getImageByIndex(index - 2));
-            imageService.setPrev(imageService.getImageByIndex(index - 1));
-        } else if (index - 1 >= 0) {
-            imageService.setPrePrev(imageService.getImageByIndex(imageService.size() - 1));
-            imageService.setPrev(imageService.getImageByIndex(0));
-        } else {
-            imageService.setPrePrev(imageService.getImageByIndex(imageService.size() - 2));
-            imageService.setPrev(imageService.getImageByIndex(imageService.size() - 1));
+        if (imageService.size() > 2) {
+            if (index - 2 >= 0) {
+                imageService.setPrePrev(imageService.getImageByIndex(index - 2));
+                imageService.setPrev(imageService.getImageByIndex(index - 1));
+            } else if (index - 1 >= 0) {
+                imageService.setPrePrev(imageService.getImageByIndex(imageService.size() - 1));
+                imageService.setPrev(imageService.getImageByIndex(0));
+            } else {
+                imageService.setPrePrev(imageService.getImageByIndex(imageService.size() - 2));
+                imageService.setPrev(imageService.getImageByIndex(imageService.size() - 1));
+            }
+        }
+        if (imageService.size() == 2) {
+            if (index == 0)
+                imageService.setPrev(imageService.getImageByIndex(1));
+            else
+                imageService.setPrev(imageService.getImageByIndex(0));
         }
     }
 
     private void setNext(int index) {
-        if (index + 2 < imageService.size()) {
-            imageService.setNext(imageService.getImageByIndex(index + 1));
-            imageService.setPostNext(imageService.getImageByIndex(index + 2));
-        } else if (index + 1 < imageService.size()) {
-            imageService.setNext(imageService.getImageByIndex(index + 1));
-            imageService.setPostNext(imageService.getImageByIndex(0));
-        } else {
-            imageService.setNext(imageService.getImageByIndex(0));
-            imageService.setPostNext(imageService.getImageByIndex(1));
+        if (imageService.size() > 2) {
+            if (index + 2 < imageService.size()) {
+                imageService.setNext(imageService.getImageByIndex(index + 1));
+                imageService.setPostNext(imageService.getImageByIndex(index + 2));
+            } else if (index + 1 < imageService.size()) {
+                imageService.setNext(imageService.getImageByIndex(index + 1));
+                imageService.setPostNext(imageService.getImageByIndex(0));
+            } else {
+                imageService.setNext(imageService.getImageByIndex(0));
+                imageService.setPostNext(imageService.getImageByIndex(1));
+            }
+        } else if (imageService.size() == 2) {
+            if (index == 0)
+                imageService.setNext(imageService.getImageByIndex(1));
+            else
+                imageService.setNext(imageService.getImageByIndex(0));
         }
     }
 
     public void saveImage(File file) throws IOException {
         checkImage(file);
-        File destinationFile = new File(folderPath, file.getName());
-        Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        addImage(destinationFile);
-        LogController.logInfo("Картинка " + file.getName() + " сохранена", this);
+        try {
+            getImageByName(file.getName());
+        } catch (IllegalArgumentException e) {
+            File destinationFile = new File(folderPath, file.getName());
+            Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            addImage(destinationFile);
+            LogController.logInfo("Картинка " + file.getName() + " сохранена", this);
+        }
+        LogController.logInfo("Картинка " + file.getName() + " уже есть", this);
     }
 
     public void deleteImage() throws IOException {
