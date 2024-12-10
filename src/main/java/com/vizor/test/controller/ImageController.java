@@ -147,10 +147,10 @@ public class ImageController {
 
     public void deleteImage() throws IOException {
         Files.delete(getCur().getFile().toPath());
-        LogController.logInfo(ConstantsError.PICTURE + getCur().getName() + " удалена", this);
         imageService.deleteImage(getCur());
+        LogController.logInfo(ConstantsError.PICTURE + getCur().getName() + " удалена", this);
         imageService.setCur(imageService.getNext());
-        setNext(imageService.getIndexByFileName(imageService.getPostNext().getName()));
+        setNext(imageService.getIndexByFileName(imageService.getPostNext().getName()) - 1);
         downloadController.download();
     }
 
