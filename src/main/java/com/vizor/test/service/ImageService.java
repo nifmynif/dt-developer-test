@@ -25,7 +25,7 @@ public class ImageService {
     public void deleteImage(ImageDTO imageDTO) {
         images.getImages().remove(imageDTO);
         setCur(null);
-        if(size()<1) {
+        if (size() < 1) {
             setNext(null);
             setPrev(null);
         }
