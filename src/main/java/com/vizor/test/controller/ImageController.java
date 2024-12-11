@@ -38,7 +38,7 @@ public class ImageController {
                     checkImage(file);
                     imageService.addImage(file);
                 });
-        LogController.logInfo("Массив заполнен " + imageService.size() + " элементов", this);
+        LogController.logInfo("Галерея заполнена на " + imageService.size() + " элементов", this);
     }
 
     private void checkImage(File file) throws IllegalArgumentException {
